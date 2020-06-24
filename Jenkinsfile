@@ -1,4 +1,4 @@
-/*pipeline {
+pipeline {
     parameters {
         choice(
             choices: ['create', 'destroy'],
@@ -7,6 +7,7 @@
         )
     }
     agent any
+    	
     stages {
 
         stage('Az login') {
@@ -21,9 +22,10 @@
 		}
             }
         }
+	
         stage('Clone repository') {
         steps {
-            git branch: 'master', credentialsId: 'Github', url: 'https://github.com/rrmartinez87/poc-elastic-pool.git'
+            git branch: 'master', credentialsId: 'Github', url: 'https://github.com/rrmartinez87/poc-vm.git'
             }
         }
 	stage('Set Terraform path') {
@@ -41,21 +43,22 @@
 	    }
 	    options {
                 azureKeyVault(
-                    credentialID: 'jenkins-sp-sql', 
-                    keyVaultURL: 'https://Sqltfstatekv-test-03.vault.azure.net/', 
+                    credentialID: 'jenkins-sp-sql2', 
+                    keyVaultURL: 'https://sqlsdtfstatekv-test-01.vault.azure.net/', 
                     secrets: [
                         [envVariable: 'TF_VAR_client_id', name: 'spn-id', secretType: 'Secret'],
                         [envVariable: 'TF_VAR_client_secret', name: 'spn-secret', secretType: 'Secret'],
                         [envVariable: 'StorageAccountAccessKey', name: 'storagekey', secretType: 'Secret']
                     ]
                 )
+	       timeout(time: 6, unit: 'HOURS')
             }
 	        steps {
                 sh '''
 		export TF_VAR_client_id=$TF_VAR_client_id
                 export TF_VAR_client_secret=$TF_VAR_client_secret
-		terraform init -no-color -backend-config="storage_account_name=sqltfstatestgtest" \
-                -backend-config="container_name=sqltfstate" \
+		terraform init -no-color -backend-config="storage_account_name=sqlsdtfstatestgtest" \
+                -backend-config="container_name=sqlsdtfstate" \
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
 		terraform plan -no-color -out out.plan
@@ -69,8 +72,8 @@
             }
 	    options {
                 azureKeyVault(
-                    credentialID: 'jenkins-sp-sql', 
-                    keyVaultURL: 'https://Sqltfstatekv-test-03.vault.azure.net/', 
+                    credentialID: 'jenkins-sp-sql2', 
+                    keyVaultURL: 'https://sqlsdtfstatekv-test-01.vault.azure.net/', 
                     secrets: [
                         [envVariable: 'TF_VAR_client_id', name: 'spn-id', secretType: 'Secret'],
                         [envVariable: 'TF_VAR_client_secret', name: 'spn-secret', secretType: 'Secret'],
@@ -82,8 +85,8 @@
             sh '''
             export TF_VAR_client_id=$TF_VAR_client_id
             export TF_VAR_client_secret=$TF_VAR_client_secret
-            terraform init -no-color -backend-config="storage_account_name=sqltfstatestgtest" \
-            -backend-config="container_name=sqltfstate" \
+            terraform init -no-color -backend-config="storage_account_name=sqlsdtfstatestgtest" \
+            -backend-config="container_name=sqlsdtfstate" \
             -backend-config="access_key=$StorageAccountAccessKey" \
             -backend-config="key=terraform.tfstate"
              terraform destroy -no-color --auto-approve
@@ -93,9 +96,8 @@
         stage('Clean WorkSpace') {
             steps {
                 echo "Wiping workspace $pwd"
-            
+                cleanWs() 
             }
         }
     }
 }
-*/
