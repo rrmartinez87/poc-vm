@@ -18,7 +18,7 @@ resource "azurerm_resource_group" "rg" {
 
   // Arguments required by Terraform API
   name = var.resource_group_name
-  //location = var.location
+  location = var.location
 
   // Optional Terraform resource manager arguments but required by architecture
   tags = var.tags
@@ -29,7 +29,7 @@ resource "azurerm_virtual_network" "vnet" {
   // Arguments required by Terraform API
   name = var.vnet_name
   address_space = [var.vnet_address_space]
-  //location = var.location
+  location = var.location
   resource_group_name = azurerm_resource_group.rg.name
   tags = var.tags
 }
@@ -50,7 +50,7 @@ resource "azurerm_subnet" "subnet" {
 //ip
 resource "azurerm_public_ip" "ip" {
   name                    = var.azurerm_public_ip_name
-  //location                = azurerm_resource_group.rg.location
+  location                = azurerm_resource_group.rg.location
   resource_group_name     = azurerm_resource_group.rg.name
   allocation_method       = var.azurerm_public_ip_allocation_method
   idle_timeout_in_minutes = var.azurerm_public_ip_idle_timeout_in_minutes
@@ -61,7 +61,7 @@ resource "azurerm_public_ip" "ip" {
 // Network Interface
 resource "azurerm_network_interface" "ni" {
   name                = var.azurerm_network_interface_name
-  //location            = azurerm_resource_group.rg.location
+  location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
@@ -76,7 +76,7 @@ resource "azurerm_network_interface" "ni" {
 // virtual machine
 resource "azurerm_virtual_machine" "vm" {
   name                  = var.azurerm_virtual_machine_name
-  //location              = azurerm_resource_group.rg.location
+  location              = azurerm_resource_group.rg.location
   resource_group_name   = azurerm_resource_group.rg.name
   network_interface_ids = [azurerm_network_interface.ni.id]
   vm_size               = var.azurerm_virtual_machine_vm_size
