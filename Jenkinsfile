@@ -62,7 +62,7 @@ pipeline {
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
 		terraform plan -no-color -out out.plan
-		terraform apply -var "${params.REQUESTED_ACTION}"
+		terraform apply -var "${params.REQUESTED_ACTION}" -no-color out.plan
                 '''
             }
         }
