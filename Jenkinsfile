@@ -61,7 +61,7 @@ pipeline {
                 -backend-config="container_name=sqlsdtfstate" \
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
-		terraform plan -no-color -out out.plan
+		terraform plan -no-color -out out.plan -var region=${params.region}
                 terraform apply -no-color out.plan
                 '''
             }
