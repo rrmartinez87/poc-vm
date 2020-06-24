@@ -23,44 +23,11 @@ resource "azurerm_resource_group" "rg" {
   // Optional Terraform resource manager arguments but required by architecture
   tags = var.tags
 }
-/*
-// Azure SQL database server resource definition
-resource "azurerm_mssql_server" "dbserver" {
-
-  // Arguments required by Terraform API
-  name = join(local.separator, [var.server_name, random_uuid.poc.result])
-  resource_group_name = (azurerm_resource_group.rg != null ? azurerm_resource_group.rg.name : var.resource_group_name)
-  //resource_group_name = var.resource_group_name
-  location = var.location
-  version = var.server_version
-  administrator_login = var.administrator_login
-  administrator_login_password = var.administrator_login_password
-  
-  // Optional Terraform resource manager arguments but required by architecture
-  connection_policy = local.connection_type
-  public_network_access_enabled = local.public_network_access
-  tags = var.tags
-}
-
-// Azure SQL single database resource definition
-resource "azurerm_mssql_database" "singledb" {
-
-  // Arguments required by Terraform API
-  name = var.single_database_name
-  server_id = azurerm_mssql_server.dbserver.id
-  sample_name = local.sample_database
-
-  // Optional Terraform resource manager arguments but required by architecture
-  max_size_gb = var.max_size_gb
-  sku_name = var.service_tier
-  tags = var.tags
-}
-*/
 // Create virtual network to set up a private endpoint later
 resource "azurerm_virtual_network" "vnet" {
   
   // Arguments required by Terraform API
-  name = join(local.separator, [var.vnet_name, random_uuid.poc.result])
+  name = var.vnet_name
   address_space = [var.vnet_address_space]
   location = var.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -71,7 +38,7 @@ resource "azurerm_virtual_network" "vnet" {
 resource "azurerm_subnet" "subnet" {
   
   // Arguments required by Terraform API
-  name = join(local.separator, [var.subnet_name, random_uuid.poc.result])
+  name = var.subnet_name
   resource_group_name = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes = var.subnet_address_prefixes
@@ -80,74 +47,6 @@ resource "azurerm_subnet" "subnet" {
   enforce_private_link_endpoint_network_policies = var.enforce_private_link_endpoint_policies
   service_endpoints = ["Microsoft.Sql"]
 }
-/*
-// Create a private endpoint to connect to the server using private access
-resource "azurerm_private_endpoint" "endpoint" {
-  
-  // Arguments required by Terraform API
-  name = join(local.separator, [var.private_endpoint_name, random_uuid.poc.result])
-  location = var.location
-  resource_group_name = azurerm_resource_group.rg.name
-  subnet_id = azurerm_subnet.subnet.id
-
-  private_service_connection {
-    name = var.service_connection_name
-    private_connection_resource_id = azurerm_mssql_server.dbserver.id
-    is_manual_connection = var.requires_manual_approval
-    subresource_names = ["sqlServer"]
-  }
-
-  // Optional Terraform resource manager arguments but required by architecture
-  tags = var.tags
-}
-
-// Create a Private DNS Zone for SQL Database domain.
-resource "azurerm_private_dns_zone" "dnszone" {
-  
-  // Arguments required by Terraform API
-  name = var.private_dns_zone_name
-  resource_group_name = azurerm_resource_group.rg.name
-
-  // Optional Terraform resource manager arguments but required by architecture
-  tags = var.tags
-}
-
-// Create an association link with the Virtual Network.
-resource "azurerm_private_dns_zone_virtual_network_link" "dnslink" {
-  
-  // Arguments required by Terraform API
-  name = var.private_dns_zone_vnet_link
-  resource_group_name = azurerm_resource_group.rg.name
-  private_dns_zone_name = azurerm_private_dns_zone.dnszone.name
-  virtual_network_id = azurerm_virtual_network.vnet.id
-
-  // Optional Terraform resource manager arguments but required by architecture
-  tags = var.tags
-}
-
-// Create a DNS Zone Group to associate the private endpoint with the Private DNS Zone.
-resource "null_resource" "set_private_dns_zone_config" { 
-  provisioner local-exec {
-    command = "az network private-endpoint dns-zone-group create --endpoint-name ${azurerm_private_endpoint.endpoint.name} --name MyZoneGroup --private-dns-zone ${azurerm_private_dns_zone.dnszone.id} --resource-group ${azurerm_resource_group.rg.name} --zone-name 'privatelink.database.windows.net'"
-  }
-
-  depends_on = [
-    azurerm_private_dns_zone_virtual_network_link.dnslink
-  ]
-}
-
-// Set database server TLS version after server creation (unsupported Azure provider argument)
-// This setting can only be configured once a private enpoint is in place
-resource "null_resource" "set_server_tls_version" { 
-  provisioner local-exec {
-    command = "az sql server update --name ${azurerm_mssql_server.dbserver.name} --resource-group ${azurerm_resource_group.rg.name} --minimal-tls-version ${local.tls_version}"
-  }
-
-  depends_on = [
-    azurerm_private_endpoint.endpoint
-  ]
-}
-*/
 //ip
 resource "azurerm_public_ip" "ip" {
   name                    = var.azurerm_public_ip_name
@@ -209,19 +108,4 @@ resource "azurerm_virtual_machine" "vm" {
       protocol = var.os_profile_windows_config_protocol  
     }
   }
-}
-//  virtual machine extension
-resource "azurerm_virtual_machine_extension" "vm_extension" {
-  name                       = var.vm_extension_name
-  virtual_machine_id         = azurerm_virtual_machine.vm.id
-  publisher                  = var.vm_extension_publisher
-  type                       = var.vm_extension_type
-  type_handler_version       = var.vm_extension_type_handler_version
-  auto_upgrade_minor_version = var.vm_extension_auto_upgrade_minor_version
-
-  settings = <<SETTINGS
-    {
-    "commandToExecute": "Powershell -c Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); choco install azure-data-studio -y"
-    }
-SETTINGS
 }
