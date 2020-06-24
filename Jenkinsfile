@@ -62,7 +62,7 @@ pipeline {
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
 		terraform plan -no-color -out out.plan
-                terraform apply -var location=${params.REGION} -no-color out.plan
+                terraform apply -var location=westus2 -no-color out.plan
                 '''
             }
         }
