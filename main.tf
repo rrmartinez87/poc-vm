@@ -17,7 +17,7 @@ resource "random_uuid" "poc" { }
 resource "azurerm_resource_group" "rg" {
 
   // Arguments required by Terraform API
-  name = join(local.separator, [var.resource_group_name, random_uuid.poc.result])
+  name = var.resource_group_name
   location = var.location
 
   // Optional Terraform resource manager arguments but required by architecture
