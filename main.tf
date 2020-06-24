@@ -18,7 +18,7 @@ resource "azurerm_resource_group" "rg" {
 
   // Arguments required by Terraform API
   name = var.resource_group_name
-  location = ${params.region}
+  location = ${params.REGION}
 
   // Optional Terraform resource manager arguments but required by architecture
   tags = var.tags
