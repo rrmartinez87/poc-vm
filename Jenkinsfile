@@ -6,13 +6,6 @@ pipeline {
             name: 'REQUESTED_ACTION'
         )
     }
-    parameters {
-        choice(
-            choices: ['westus2', 'westus'],
-            description: 'Select region to perform',
-            name: 'location'
-        )
-    } 
     agent any
     	
     stages {
@@ -58,7 +51,7 @@ pipeline {
                         [envVariable: 'StorageAccountAccessKey', name: 'storagekey', secretType: 'Secret']
                     ]
                 )
-	       timeout(time: 6, unit: 'HOURS')
+	       
             }
 	        steps {
                 sh '''
