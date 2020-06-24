@@ -6,6 +6,13 @@ pipeline {
             name: 'REQUESTED_ACTION'
         )
     }
+    parameters {
+        choice(
+            choices: ['westus2', 'westus'],
+            description: 'Select region to perform',
+            name: 'location'
+        )
+    } 
     agent any
     	
     stages {
@@ -62,7 +69,7 @@ pipeline {
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
 		terraform plan -no-color -out out.plan
-                terraform apply -var -no-color out.plan
+                terraform apply -no-color out.plan
                 '''
             }
         }
