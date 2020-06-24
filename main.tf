@@ -1,10 +1,9 @@
-/*
 // Azure provider configuration
 terraform {
   required_version = ">= 0.12"
   backend "azurerm" {}
 }
-*/
+
 provider "azurerm" {
     version = "~>2.0"
     features {}
