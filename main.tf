@@ -23,6 +23,7 @@ resource "azurerm_resource_group" "rg" {
   // Optional Terraform resource manager arguments but required by architecture
   tags = var.tags
 }
+/*
 // Create virtual network to set up a private endpoint later
 resource "azurerm_virtual_network" "vnet" {
   
@@ -109,3 +110,4 @@ resource "azurerm_virtual_machine" "vm" {
     }
   }
 }
+*/
