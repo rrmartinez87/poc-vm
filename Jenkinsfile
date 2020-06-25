@@ -1,10 +1,11 @@
 pipeline {
     parameters {
-        choice(
-            choices: ['create', 'destroy'],
-            description: 'Select action to perform',
-            name: 'REQUESTED_ACTION'
-        )
+        choice( name: 'REQUESTED_ACTION'
+            	choices: ['create', 'destroy'],
+                description: 'Select action to perform')
+	choice( name: 'location'
+            	choices: ['westus', 'westus2'],
+                description: 'Select region to perform')    
     }
     agent any
     	
