@@ -1,9 +1,9 @@
 pipeline {
     parameters {
-        choice( name: 'REQUESTED_ACTION'
+        choice( name: 'REQUESTED_ACTION',
             	choices: ['create', 'destroy'],
                 description: 'Select action to perform')
-	choice( name: 'location'
+	choice( name: 'location',
             	choices: ['westus', 'westus2'],
                 description: 'Select region to perform')    
     }
