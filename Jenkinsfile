@@ -64,7 +64,6 @@ pipeline {
                 -backend-config="container_name=sqlsdtfstate" \
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
-		echo "${params.location} World!"
 		terraform plan -no-color -out out.plan
 		terraform apply -no-color out.plan
 		
