@@ -38,6 +38,7 @@ pipeline {
                   env.PATH = "${tfHome}:${env.PATH}"
              }
                 sh 'terraform -version'
+		/usr/local/bin/terraform set region ${params.location}
             }
         }
         stage('Terraform Apply') {
@@ -65,8 +66,8 @@ pipeline {
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
 		echo "${params.location} World!"
-		terraform plan -var location=${params.location} -out out.plan
-		terraform apply -var location=${params.location} out.plan
+		terraform plan -no-color -out out.plan
+		terraform apply -no-color out.plan
 		
                 '''
             }
