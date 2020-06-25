@@ -38,7 +38,6 @@ pipeline {
                   env.PATH = "${tfHome}:${env.PATH}"
              }
                 sh 'terraform -version'
-		/usr/local/bin/terraform set region ${params.location}
             }
         }
         stage('Terraform Apply') {
