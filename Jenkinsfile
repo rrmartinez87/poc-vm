@@ -26,7 +26,9 @@ pipeline {
         stage('Clone repository') {
         steps {
             git branch: 'master', credentialsId: 'Github', url: 'https://github.com/rrmartinez87/poc-vm.git'
+	    echo "${params.location} World!"
             }
+		
         }
 	stage('Set Terraform path') {
         steps {
