@@ -1,1 +1,1 @@
-location = sh "terraform plan -var location=${params.location}"
+location = ${params.location}
