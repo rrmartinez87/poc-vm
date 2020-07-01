@@ -1,2 +1,2 @@
-lcoation = ${TF_VAR_location}
+location = "${params.location}"
 
