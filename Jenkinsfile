@@ -58,6 +58,7 @@ pipeline {
             }
 	        steps {
                 sh '''
+		echo $TF_VAR_client_id
 		export TF_VAR_client_id=$TF_VAR_client_id
                 export TF_VAR_client_secret=$TF_VAR_client_secret
 		terraform init -no-color -backend-config="storage_account_name=sqlsdtfstatestgtest" \
