@@ -1,1 +1,1 @@
-location = ${params.region}
+location = "${params.region}"
