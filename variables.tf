@@ -25,7 +25,6 @@ variable "resource_group_name" {
 variable "location" { 
     description = "Specifies the supported Azure location where the resource exists. Changing this forces a new resource to be created."
     type = string
-    default = ${params.location}"
 }
 
 variable "tags" { 
