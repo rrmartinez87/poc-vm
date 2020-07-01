@@ -1,1 +1,1 @@
-location = "{$TF_VAR_client_id}"
+echo location = $TF_VAR_client_id}
