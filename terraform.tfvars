@@ -1,1 +1,1 @@
-location = ${TF_VAR_params.location}
+location = "${TF_VAR_params.location}"
