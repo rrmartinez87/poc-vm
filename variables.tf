@@ -40,7 +40,6 @@ variable "tags" {
 variable "server_name" { 
     description = "The name of the Microsoft SQL Server. This needs to be globally unique within Azure."
     type = string
-    default = "sql-db-server"
 }
 
 variable "server_version" { 
