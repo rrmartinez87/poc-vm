@@ -1,1 +1,3 @@
+inputs = {
 location = "${var.location}"
+  }
