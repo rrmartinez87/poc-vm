@@ -1,2 +1,2 @@
-location = "westus2"
+location = "${tfHome}:${env.PATH}"
 
