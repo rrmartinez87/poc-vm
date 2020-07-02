@@ -61,7 +61,7 @@ pipeline {
 	       
             }
 	        steps {
-		sh "echo location=${params.location} > terraform.tfvars"
+		
 		sh '''
 		export TF_VAR_client_id=$TF_VAR_client_id
                 export TF_VAR_client_secret=$TF_VAR_client_secret
@@ -69,9 +69,11 @@ pipeline {
                 -backend-config="container_name=sqlsdtfstate" \
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
-		terraform plan -no-color -out out.plan
-		terraform apply -no-color out.plan
-	        '''
+		'''
+		sh 'terraform plan -var location=${params.loaction} -no-color -out out.plan'
+		sh 'terraform apply -var location=${params.loaction} -no-color out.plan'
+		
+	        
 		}
         }
 		stage('Terraform Destroy') {
