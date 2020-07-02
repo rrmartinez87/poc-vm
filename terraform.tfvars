@@ -1,3 +1,1 @@
-inputs = {
 location = "westus"
-  }
