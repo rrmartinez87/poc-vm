@@ -34,9 +34,9 @@ pipeline {
 	    
 	stage('Set Variables') {
 	steps {	
-             
-            export TF_VAR_location = "${params.location}"
-	    
+            sh ''' 
+            export TF_VAR_location = $params.location}"
+	    '''
 	     }
 	}    
 	    
