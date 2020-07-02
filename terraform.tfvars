@@ -1,2 +1,2 @@
-location = "${tfHome}:${env.PATH}"
+location = "$[params.location]"
 
