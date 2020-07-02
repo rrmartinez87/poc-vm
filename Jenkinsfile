@@ -36,7 +36,6 @@ pipeline {
         steps {
 	    sh ''' 
             export TF_VAR_location="${params.location}"
-	    echo "${params.location}"
 	    '''
 	      }
 		
