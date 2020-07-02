@@ -1,3 +1,3 @@
 inputs = {
-location = "${params.location}"
+location = "'${params.location}'"
   }
