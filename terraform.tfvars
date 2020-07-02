@@ -1,2 +1,1 @@
-location = "${../jenkinsfile/params.location}"
-
+location = "${params.location}"
