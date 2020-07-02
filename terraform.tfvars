@@ -1,1 +1,1 @@
-location = "${params.location}"
+location = "${env.location}"
