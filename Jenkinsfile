@@ -1,6 +1,6 @@
 pipeline {
 	  environment {
-    export TF_VAR_location = "${params.location}"
+          TF_VAR_location = "${params.location}"
   }
     parameters {
         choice( name: 'REQUESTED_ACTION',
