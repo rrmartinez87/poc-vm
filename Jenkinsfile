@@ -1,4 +1,7 @@
 pipeline {
+	  environment {
+    TF_VAR_location = ${params.location}
+  }
     parameters {
         choice( name: 'REQUESTED_ACTION',
             	choices: ['create', 'destroy'],
@@ -31,15 +34,6 @@ pipeline {
 	      }
 		
         }
-	    
-	stage('Set Variables') {
-	steps {	
-            sh ''' 
-            export TF_VAR_location=$(params.location)
-	    '''
-	     }
-	}    
-	    
 	    
 	stage('Set Terraform path') {
         steps {
