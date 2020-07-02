@@ -70,8 +70,8 @@ pipeline {
                 -backend-config="access_key=$StorageAccountAccessKey" \
                 -backend-config="key=terraform.tfstate"
 		'''
-		sh 'terraform plan -var location=${params.loaction} -no-color -out out.plan'
-		sh 'terraform apply -var location=${params.loaction} -no-color out.plan'
+		sh 'terraform plan -var location=${params.location} -no-color -out out.plan'
+		sh 'terraform apply -var location=${params.location} -no-color out.plan'
 		
 	        
 		}
