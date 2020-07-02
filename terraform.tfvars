@@ -1,1 +1,1 @@
-location = "${jenkins.params.location}"
+location = "${var.location}"
