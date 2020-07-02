@@ -66,8 +66,7 @@ pipeline {
                 -backend-config="key=terraform.tfstate"
 		terraform plan -no-color -out out.plan
 		terraform apply -no-color out.plan
-		
-                '''
+	        '''
             }
         }
 		stage('Terraform Destroy') {
