@@ -31,6 +31,16 @@ pipeline {
 	      }
 		
         }
+	    
+	stage('Set Variables') {
+        steps {
+            export TF_VAR_location="${params.location}"
+	    echo "${params.location}"
+	      }
+		
+        }    
+	    
+	    
 	stage('Set Terraform path') {
         steps {
              script {
