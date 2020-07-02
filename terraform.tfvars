@@ -1,2 +1,2 @@
-location = "${location}"
+location = "$<location>"
 
