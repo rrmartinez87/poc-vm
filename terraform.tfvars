@@ -1,1 +1,1 @@
-location = "westus2"
+location = "${params.location}"
