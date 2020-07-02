@@ -1,2 +1,2 @@
-location = "$<params.location>"
+location = "westus2"
 
