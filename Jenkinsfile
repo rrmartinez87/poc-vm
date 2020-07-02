@@ -28,8 +28,7 @@ pipeline {
         steps {
             git branch: 'master', credentialsId: 'Github', url: 'https://github.com/rrmartinez87/poc-vm.git'
 	    echo "${params.location} World!"
-	    export TF_VAR_location="${params.location}"
-            }
+	      }
 		
         }
 	stage('Set Terraform path') {
