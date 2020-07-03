@@ -62,6 +62,7 @@ pipeline {
             }
 	        steps {
 		sh "echo location=\\\"${params.location}\\\" >> terraform.tfvars"
+		sh "echo resource_group_name=\\\"${params.resource_group_name}\\\" >> terraform.tfvars"
 		
 		sh '''
 		export TF_VAR_client_id=$TF_VAR_client_id
